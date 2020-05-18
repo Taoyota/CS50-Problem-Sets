@@ -1,0 +1,44 @@
+#include <cs50.h>
+#include <math.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+void PrintGrade(float l, float s);
+
+int main(void)
+{
+    string text = get_string("Text: ");
+    int nWords, nLetters, nSentences;
+    nWords = nLetters = nSentences = 0;
+
+    for (int i = 0, len = strlen(text); i < len; i++)
+    {
+        if (isalpha(text[i]))
+            nLetters++;
+
+        if ((i == 0 && text[i] != ' ') || (i != len - 1 && text[i] == ' ' && text[i + 1] != ' '))
+            nWords++;
+
+        if (text[i] == '.' || text[i] == '!' || text[i] == '?')
+            nSentences++;
+    }
+
+    float l = (float) nLetters / nWords * 100;
+    float s = (float) nSentences / nWords * 100;
+
+    printf("Grade ");
+    PrintGrade(l, s);
+}
+
+void PrintGrade(float l, float s)
+{
+    int grade = round(0.0588 * l - 0.296 * s - 15.8);
+
+    if (grade < 1)
+        printf("Before Grade 1\n");
+    else if (grade >= 16)
+        printf("Grade 16+\n");
+    else
+        printf("%i\n", grade);
+}
